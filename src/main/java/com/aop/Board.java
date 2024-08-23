@@ -10,8 +10,8 @@ public class Board extends Frame implements KeyListener {
     public static final String TEXT_RESET  = "\u001B[0m";
     private static Board _board = null;
     public static enum Player {
-        X,
-        O
+        O,
+        X
        }
 
    private static String[] _boardArr;
@@ -33,7 +33,9 @@ public class Board extends Frame implements KeyListener {
         "_", "_", "_",
         "_" , "_", "_" };
 
-    _currPlayerTurn = Player.X;
+    Board._currPlayerTurn = Player.X;
+    System.out.println("X starts! \n Use the arrow keys to select your mark. \n Press `ENTER` when you have made your decision");
+    render();
    }
 
    public void render(){
@@ -47,32 +49,32 @@ public class Board extends Frame implements KeyListener {
     }
    }
 
+   private void changeSlot(int i){
+    _boardArr[i] = Board._currPlayerTurn.toString();
+    
+   }
+
+   public static void setNextPlayer(){
+    if( Board._currPlayerTurn == Player.X ) Board._currPlayerTurn = Player.O;
+    else if( Board._currPlayerTurn == Player.O ) Board._currPlayerTurn = Player.X;
+    
+   }
+
    /*
     * GETTERS
     */
-   public String[] getBoard(){
+   public static String[] getBoard(){
     return _boardArr;
    }
 
-   public Player getPlayerTurn(){
-    return _currPlayerTurn;
-   }
-
-   public int getBoardCurrPos(){
+   public static int getBoardCurrPos(){
     return Board._currPos;
    }
 
-   /*
-    * SETTERS
-    */
-   public void setPlayerTurn(Player player ){
-    _currPlayerTurn = player;
+   public static Player getCurrentPlayer(){
+    return Board._currPlayerTurn;
    }
-
-   public void changeSlot(int i){
-    _boardArr[i] = _currPlayerTurn.toString();
-   }
-
+  
    /*
     * KEY LISTENER METHODS
     */
