@@ -15,7 +15,7 @@ public class Referee {
 
     List<String> winningCombinations = Arrays.asList(new String[]{
         "0 3 6",
-        "1 4 6",
+        "1 4 7",
         "2 5 8",
         "0 1 2",
         "3 4 5",
@@ -29,36 +29,28 @@ public class Referee {
 
     @Around("slotChange()")
     public Object validateMove(ProceedingJoinPoint jp) throws Throwable{
+        String currentBoardState = buildWinnerCheckString();
+
+        for (String combination : winningCombinations) {
+            if (containsWinningCombination(currentBoardState, combination)) {
+                System.out.println("We have a winner! Player" + Board.getCurrentPlayer().toString());
+                Board.reset();
+                return null;
+            }
+        }
+
         if (checkDraw()){
             System.out.println("DRAW!");
-            Main.board.initGame();
+            Board.reset();
             return null;
         }
         if (Board.getBoard()[Board.getBoardCurrPos()] != "_") {
             System.out.println("Location occupied");
             return null;
         }
-        // if(checkDraw()){
-        //     System.out.println("Draw:");
-        //     Main.board.initGame();
-        // }
-        System.out.println(buildWinnerCheckString());
+
         Board.setNextPlayer();
         return jp.proceed();
-    }
-
-   
-    public void checkIfWinner() {
-        
-
-        // boolean winner = false;
-
-        // while(!winner)
-        //     winningCombinations.forEach(x->Referee.containsWinningCombination(winnerCheckString, x));
-        // if( winner ){
-        //     System.out.println("Winner! Player" + Board.getCurrentPlayer().toString());
-        //     Main.board.initGame();
-        // }
     }
 
     public String buildWinnerCheckString(){
@@ -75,16 +67,23 @@ public class Referee {
         return false;
     }
 
-    public static boolean containsWinningCombination(String input, String characters){
-        Set<Character> charSet = new HashSet<>();
-        for (char c : characters.toCharArray())
-            if (c != ' ')
-                charSet.add(c);
+   public static boolean containsWinningCombination(String input, String combination){
+        // Create a set from the combination for easy lookup
+        Set<Character> comboSet = new HashSet<>();
+        for (char c : combination.toCharArray()) {
+            if (c != ' ') {
+                comboSet.add(c);
+            }
+        }
 
-        for (char c : charSet)
-            if (input.indexOf(c) == -1)
+        // Check if all characters in the combination are present in the input
+        for (char c : comboSet) {
+            if (input.indexOf(c) == -1) {
                 return false;
+            }
+        }
 
         return true;
     }
+
 }

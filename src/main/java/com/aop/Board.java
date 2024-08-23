@@ -12,7 +12,7 @@ public class Board extends Frame implements KeyListener {
     public static enum Player {
         O,
         X
-       }
+    }
 
    private static String[] _boardArr;
    private static Player _currPlayerTurn;
@@ -27,15 +27,19 @@ public class Board extends Frame implements KeyListener {
    public void initGame(){
     addKeyListener(this);
     setVisible(true);
-    Board._currPos = 0;
-    _boardArr = new String[] 
-        { "_", "_", "_",
-        "_", "_", "_",
-        "_" , "_", "_" };
-
-    Board._currPlayerTurn = Player.X;
-    System.out.println("X starts! \n Use the arrow keys to select your mark. \n Press `ENTER` when you have made your decision");
+    Board.reset();
     render();
+   }
+
+   public static void reset(){
+        Board._currPos = 0;
+        Board._boardArr = new String[] 
+            { "_", "_", "_",
+            "_", "_", "_",
+            "_" , "_", "_" };
+
+        Board._currPlayerTurn = Player.X;
+        System.out.println("X starts! \n Use the arrow keys to select your mark. \n Press `ENTER` when you have made your decision");
    }
 
    public void render(){
@@ -79,7 +83,6 @@ public class Board extends Frame implements KeyListener {
     * KEY LISTENER METHODS
     */
 
-    
     @Override
     public void keyPressed(KeyEvent e) {
         for(int n = 0; n < 35; n++ ) System.out.println("");
@@ -100,7 +103,6 @@ public class Board extends Frame implements KeyListener {
             case KeyEvent.VK_RIGHT:
                 if(Board._currPos == 8) Board._currPos = 0;
                 else Board._currPos += 1;
-
                 break;
             case KeyEvent.VK_ENTER:
                 changeSlot(Board._currPos);
