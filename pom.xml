@@ -9,9 +9,9 @@
     <version>1.0</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <aspectj.version>1.9.20</aspectj.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <aspectj.version>1.9.7</aspectj.version>
     </properties>
 
     <build>
@@ -22,9 +22,9 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.15.0</version>
                 <configuration>
-                    <complianceLevel>1.9</complianceLevel>
-                    <source>1.9</source>
-                    <target>1.9</target>
+                    <complianceLevel>1.7</complianceLevel>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <showWeaveInfo>true</showWeaveInfo>
                     <verbose>true</verbose>
                     <Xlint>ignore</Xlint>
