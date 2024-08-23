@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class Referee {
 
+    // Winning Tic Tac Toe Combinations
     List<String> winningCombinations = Arrays.asList(new String[]{
         "0 3 6",
         "1 4 7",
@@ -29,9 +30,13 @@ public class Referee {
 
     @Around("slotChange()")
     public Object validateMove(ProceedingJoinPoint jp) throws Throwable{
-        String currentBoardState = buildWinnerCheckString();
+        /*
+         * Check for Win, Draw, and position check.
+         */
+        String currentBoardState = buildWinnerCheckString(); // Get current player locations as string
 
         for (String combination : winningCombinations) {
+            //Check current player string contains any winning combination
             if (containsWinningCombination(currentBoardState, combination)) {
                 System.out.println("We have a winner! Player" + Board.getCurrentPlayer().toString());
                 Board.reset();
@@ -39,35 +44,43 @@ public class Referee {
             }
         }
 
-        if (checkDraw()){
+        if (checkDraw()){ // Calls checkdraw
             System.out.println("DRAW!");
             Board.reset();
             return null;
         }
-        if (Board.getBoard()[Board.getBoardCurrPos()] != "_") {
+        if (Board.getBoard()[Board.getBoardCurrPos()] != "_") { // checks if space is not empty
             System.out.println("Location occupied");
             return null;
         }
 
-        Board.setNextPlayer();
+        Board.setNextPlayer(); // Turn over, set next player
         return jp.proceed();
     }
 
     public String buildWinnerCheckString(){
+        /*
+         * Build current player string to check for winning combinations
+         * Uses indice of Board Array
+         */
         String winnerCheckString = new String();
         for(int i = 0; i < 9; i++)
             if(Board.getBoard()[i] == Board.getCurrentPlayer().toString()) 
-                winnerCheckString += String.valueOf(i);
+                winnerCheckString += String.valueOf(i); // Add index of all current player locations to string
 
         return winnerCheckString;
     }
 
     public boolean checkDraw(){
-        if(!Arrays.toString(Board.getBoard()).contains("_")) return true;
+        if(!Arrays.toString(Board.getBoard()).contains("_")) return true; // Checks for if players have taken all slots
         return false;
     }
 
    public static boolean containsWinningCombination(String input, String combination){
+        /*
+         * Compares current player string with selected combination
+         */
+
         // Create a set from the combination for easy lookup
         Set<Character> comboSet = new HashSet<>();
         for (char c : combination.toCharArray()) {
